@@ -12,16 +12,20 @@ const bcrypt=require('bcrypt')
 
 const jwt = require('jsonwebtoken')
 
+//require validators
+
+const {validator,registerRules,loginRules} = require('../../middlewares/validator')
+
 //route post api/user/register
 // register new user
 // accces public
-router.post('/register',async(req,res)=>{
+router.post('/register',registerRules(),validator,async(req,res)=>{
     const {name , lastName,email,password}=req.body
     try {
         //simple validation
-        if(!name ||!lastName||!email||!password){
-            return res.status(400).json({msg:'please enter all fields'})
-        }
+        // if(!name ||!lastName||!email||!password){
+        //     return res.status(400).json({msg:'please enter all fields'})
+        // }
         //check for existing user
         let user=await User.findOne({email })
         if (user) {
@@ -64,16 +68,16 @@ router.post('/register',async(req,res)=>{
 })
 
 //route post api/user/login
-// register new user
+// login user
 // accces public
-router.post('/login' , async (req,res)=>{
+router.post('/login',loginRules(),validator , async (req,res)=>{
     const {email,password}=req.body
     try {
         //simple validation
-        if (!email || !password) {
-            return res.status(400).json({msg:'please enter all fields'})
+        // if (!email || !password) {
+        //     return res.status(400).json({msg:'please enter all fields'})
 
-        }
+        // }
 
         //check for existing user
         let user=await User.findOne({email})
