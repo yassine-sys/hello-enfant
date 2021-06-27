@@ -13,14 +13,20 @@ const loginRules=()=>[
 ]
 
 const registerPartenaireRules=()=>[
-    body('name','name is required').notEmpty(),
+    body('partenaire_name','name is required').notEmpty(),
+    body('responsable_name','v is required').notEmpty(),
+    body('responsable_lastName','responsable_lastName is required').notEmpty(),
     body('categorie','categorie is required').notEmpty(),
     body('email',' email is required').isEmail(),
     body('password','password is required').notEmpty(),
     body('address','address is required').notEmpty(),
+    body('ville','address is required').notEmpty(),
     body('tel','tel is required').notEmpty(),
 
 
+]
+const commentRules=()=>[
+    body('contenu','contenu is required').notEmpty()
 ]
 
 
@@ -36,4 +42,4 @@ const validator = (req,res,next)=>{
     }
     next()
 }
-module.exports={registerRules,loginRules,validator,registerPartenaireRules}
+module.exports={registerRules,loginRules,validator,registerPartenaireRules,commentRules}

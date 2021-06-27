@@ -16,6 +16,9 @@ const jwt = require('jsonwebtoken')
 
 const {validator,registerRules,loginRules} = require('../../middlewares/validator')
 
+const isAuth = require('../../middlewares/isAuth')
+
+
 //route post api/user/register
 // register new user
 // accces public
@@ -90,9 +93,45 @@ router.post('/login',loginRules(),validator , async (req,res)=>{
             return res.status(400).json({msg:'bad credentials'})
         }
 
-        res.send({msg:'user logged in', user})
+         // sing user
+    const payload = {
+        id: user._id,
+      };
+  
+      // Generate token
+      const token = await jwt.sign(payload, process.env.secretOrKey, {
+        expiresIn: '7 days',
+      });
+
+        res.send({msg:'user logged in', user,token})
     } catch (error) {
         res.status(500).json({msg:'server error'})
     }
 })
+
+//route get api/users/userlist
+// get user list
+// accces public
+router.get('/userlist',isAuth,async(req,res)=>{
+    try {
+        const user = await User.find();
+        res.json({ msg: "userlist", user });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+//route delete api/users/delete/:id
+// delete user by id
+// accces admin
+router.delete('/delete/:id',isAuth,async(req,res)=>{
+    try {
+        const user = await User.findByIdAndRemove({ _id: req.params.id });
+        res.json({ msg: "user deleted", user });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
 module.exports = router

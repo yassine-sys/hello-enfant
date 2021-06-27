@@ -24,6 +24,10 @@ const userSchema = new Schema({
     required: true,
    
   },
+  commentaires:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: "Commentaire"
+}],
   role: {
     type: String,
     required: true,

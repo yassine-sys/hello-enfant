@@ -14,12 +14,14 @@ const jwt = require('jsonwebtoken')
 
 const {validator,registerPartenaireRules,loginRules} = require('../../middlewares/validator')
 
+const isAuth = require('../../middlewares/isAuth')
+
 
 //route post api/partenaire/register
 // register new partenaire
 // accces public
 router.post('/register',registerPartenaireRules(),validator,async(req,res)=>{
-    const {name , lastName,email,password,categorie,address,tel}=req.body
+    const {partenaire_name , responsable_name,responsable_lastName,email,password,categorie,address,tel,ville,rate,image}=req.body
     try {
         //simple validation
         // if(!name ||!lastName||!email||!password||!categorie||!address||!tel){
@@ -33,7 +35,7 @@ router.post('/register',registerPartenaireRules(),validator,async(req,res)=>{
         }
 
         //create user
-        partenaire = new Partenaire({name , lastName,email,password,categorie,address,tel})
+        partenaire = new Partenaire({partenaire_name,responsable_name , responsable_lastName,email,password,categorie,address,tel,ville,rate,image})
         
           // Create Salt & hash
     const salt = 10;
@@ -58,8 +60,6 @@ router.post('/register',registerPartenaireRules(),validator,async(req,res)=>{
         res.status(500).send({msg:'error'})
         
     }
-
-
 })
 
 //route post api/partenaire/login
@@ -69,10 +69,10 @@ router.post('/login',loginRules(),validator, async (req,res)=>{
     const {email,password}=req.body
     try {
         //simple validation
-        if (!email || !password) {
-            return res.status(400).json({msg:'please enter all fields'})
+        // if (!email || !password) {
+        //     return res.status(400).json({msg:'please enter all fields'})
 
-        }
+        // }
 
         //check for existing partenaire
         let partenaire=await Partenaire.findOne({email})
@@ -90,4 +90,101 @@ router.post('/login',loginRules(),validator, async (req,res)=>{
         res.status(500).json({msg:'server error'})
     }
 })
+
+//route get api/partenaire/partenairelist
+// get partenaire list
+// accces public
+router.get('/partenairelist',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.find();
+        res.json({ msg: "partenairelist", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+//route get api/partenaire/categorie
+// get by categorie
+// accces public
+router.get('/find/:categorie',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.find({ categorie: req.params.categorie });
+        res.json({ msg: "categorie result", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+//route get api/partenaire/ville
+// get by ville
+// accces public
+router.get('/:ville',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.find({ ville: req.params.ville });
+        res.json({ msg: "ville result", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+
+//route get api/partenaire/get/:id
+// get partenaire by id
+// accces public
+router.get('/get/:id',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.findById({ _id: req.params.id });
+        res.json({ msg: "partenaire found", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+//route get api/partenaire/rate
+// get partenaire by rate
+// accces public
+router.get('/rate/:rate',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.find({ rate: req.params.rate });
+        res.json({ msg: "partenaire found by rate", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+//route delete api/partenaire/delete/:id
+// delete partenaire by id
+// accces admin
+router.delete('/delete/:id',isAuth,async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.findByIdAndRemove({ _id: req.params.id });
+        res.json({ msg: "partenaire deleted", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+
+//route edit api/partenaire/update/:id
+// edit partenaire by id
+// accces admin
+
+router.put('/update/:id',isAuth,async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.findOneAndUpdate({_id:req.params.id},{$set:{...req.body}})
+        res.json(partenaire)
+        
+    } catch (err) {
+        console.log(err)
+        
+    }
+})
+
+
+
 module.exports = router

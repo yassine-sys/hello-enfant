@@ -6,7 +6,16 @@ const Schema = mongoose.Schema;
 
 // Create the user schema
 const partenaireSchema = new Schema({
-  name: {
+
+  partenaire_name: {
+    type: String,
+    required: true,
+  },
+  responsable_name: {
+    type: String,
+    required: true,
+  },
+  responsable_lastName: {
     type: String,
     required: true,
   },
@@ -29,8 +38,12 @@ const partenaireSchema = new Schema({
   address: {
     type: String,
     required: true,
-   
-   
+      
+  },
+  ville: {
+    type: String,
+    required: true,
+      
   },
   tel: {
     type: String,
@@ -38,6 +51,14 @@ const partenaireSchema = new Schema({
    
    
   },
+  rate:{
+    type:Number,
+    default:0,
+  },
+  image:{
+    type:[String]
+  },
+ 
   role: {
     type: String,
     required: true,
