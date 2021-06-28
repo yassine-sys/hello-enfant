@@ -51,10 +51,10 @@ const partenaireSchema = new Schema({
    
    
   },
-  rate:{
-    type:Number,
-    default:0,
-  },
+  rate:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: "Rate"
+}],
   image:{
     type:[String]
   },

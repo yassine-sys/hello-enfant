@@ -17,6 +17,8 @@ const partenaireRoutes = require('./routes/api/partenaireRoutes')
 app.use('/api/partenaire',partenaireRoutes)
 const commentaireRoutes = require('./routes/api/commentaireRoute')
 app.use('/api/commentaire',commentaireRoutes )
+const rateRoute = require('./routes/api/rateRoute')
+app.use('/api/rate',rateRoute)
 // port
 const port=5000
 app.listen(port,err=> {
