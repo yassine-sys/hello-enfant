@@ -14,14 +14,15 @@ const jwt = require('jsonwebtoken')
 
 const {validator,registerPartenaireRules,loginRules} = require('../../middlewares/validator')
 
-const isAuth = require('../../middlewares/isAuth')
+ const isAuth = require('../../middlewares/isAuth')
+
 
 
 //route post api/partenaire/register
 // register new partenaire
 // accces public
 router.post('/register',registerPartenaireRules(),validator,async(req,res)=>{
-    const {partenaire_name , responsable_name,responsable_lastName,email,password,categorie,address,tel,ville,rate,image}=req.body
+    const {partenaire_name , responsable_name,responsable_lastName,email,password,categorie,address,tel,ville,rate,image,code_postal,logo,activite}=req.body
     try {
         //simple validation
         // if(!name ||!lastName||!email||!password||!categorie||!address||!tel){
@@ -35,7 +36,7 @@ router.post('/register',registerPartenaireRules(),validator,async(req,res)=>{
         }
 
         //create user
-        partenaire = new Partenaire({partenaire_name,responsable_name , responsable_lastName,email,password,categorie,address,tel,ville,rate,image})
+        partenaire = new Partenaire({partenaire_name,responsable_name , responsable_lastName,email,password,categorie,address,tel,ville,rate,image,code_postal,logo,activite})
         
           // Create Salt & hash
     const salt = 10;
@@ -84,14 +85,24 @@ router.post('/login',loginRules(),validator, async (req,res)=>{
         if (!isMatch){
             return res.status(400).json({msg:'bad credentials'})
         }
+         // sing partenaire
+    const payload = {
+        id: partenaire._id,
+      };
+  
+      // Generate token
+      const token = await jwt.sign(payload, process.env.secretOrKey, {
+        expiresIn: '7 days',
+      });
+  
 
-        res.send({msg:'partenaire logged in', partenaire})
+        res.send({msg:'partenaire logged in', partenaire ,token})
     } catch (error) {
         res.status(500).json({msg:'server error'})
     }
 })
 
-//route get api/partenaire/partenairelist
+//route get /api/partenaire/partenairelist
 // get partenaire list
 // accces public
 router.get('/partenairelist',async(req,res)=>{
@@ -104,7 +115,7 @@ router.get('/partenairelist',async(req,res)=>{
     },
 )
 
-//route get api/partenaire/categorie
+//route get api/partenaire/find/:categorie
 // get by categorie
 // accces public
 router.get('/find/:categorie',async(req,res)=>{
@@ -151,6 +162,19 @@ router.get('/rate/:rate',async(req,res)=>{
     try {
         const partenaire = await Partenaire.find({ rate: req.params.rate });
         res.json({ msg: "partenaire found by rate", partenaire });
+      } catch (error) {
+        res.send("server error");
+      }
+    },
+)
+
+//route get api/partenaire/activite/:activite
+// get partenaire by activite
+// accces public
+router.get('/activite/:activite',async(req,res)=>{
+    try {
+        const partenaire = await Partenaire.find({ activite: req.params.activite });
+        res.json({ msg: "partenaire found by activite", partenaire });
       } catch (error) {
         res.send("server error");
       }

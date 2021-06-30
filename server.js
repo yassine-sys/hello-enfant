@@ -1,9 +1,12 @@
 const express=require("express");
+const cors = require('cors')
+
 
 // instanciation
 const app=express()
 // middleware
 app.use(express.json())
+app.use(cors())
 // Require connectDB
 const connectDB = require('./config/connectDB');
   

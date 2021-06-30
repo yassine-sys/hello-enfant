@@ -35,6 +35,11 @@ const partenaireSchema = new Schema({
    
    
   },
+  activite: {
+    type: String,
+    
+   
+  },
   address: {
     type: String,
     required: true,
@@ -42,6 +47,11 @@ const partenaireSchema = new Schema({
   },
   ville: {
     type: String,
+    required: true,
+      
+  },
+  code_postal: {
+    type: Number,
     required: true,
       
   },
@@ -57,6 +67,10 @@ const partenaireSchema = new Schema({
 }],
   image:{
     type:[String]
+  },
+  logo:{
+    type:String,
+    
   },
  
   role: {

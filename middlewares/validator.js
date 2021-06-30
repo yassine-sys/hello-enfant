@@ -13,8 +13,8 @@ const loginRules=()=>[
 ]
 
 const registerPartenaireRules=()=>[
-    body('partenaire_name','name is required').notEmpty(),
-    body('responsable_name','v is required').notEmpty(),
+    body('partenaire_name','partenaire_name is required').notEmpty(),
+    body('responsable_name','responsable_name is required').notEmpty(),
     body('responsable_lastName','responsable_lastName is required').notEmpty(),
     body('categorie','categorie is required').notEmpty(),
     body('email',' email is required').isEmail(),
@@ -22,6 +22,7 @@ const registerPartenaireRules=()=>[
     body('address','address is required').notEmpty(),
     body('ville','address is required').notEmpty(),
     body('tel','tel is required').notEmpty(),
+    body('code_postal','code_postal is required').notEmpty(),
 
 
 ]
