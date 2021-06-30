@@ -3,12 +3,10 @@ import './App.css';
 import React, { Component } from 'react';
 import Navbarapp from './component/Navbarapp';
 import Carousselle from './component/Carousselle';
-import Creche from './component/Creche'
-import Jardin from './component/Jardin';
-import Ecole from './component/Ecole';
-import Club from './component/Club';
-import PartenaireCard from './component/PartenaireCard';
-import PartenaireList from './component/PartenaireList';
+import CrecheHome from './component/CrecheHome'
+import JardinHome from './component/JardinHome';
+import EcoleHome from './component/EcoleHome';
+import ClubHome from './component/ClubHome';
 
 
 function App() {
@@ -16,11 +14,10 @@ function App() {
     <div className="App">
       <Navbarapp />
       <Carousselle/>
-      <Creche />
-      <Jardin />
-      <Ecole />
-      <Club />
-      <PartenaireList />
+      <CrecheHome />
+      <JardinHome />
+      <EcoleHome />
+      <ClubHome />
 
       
     </div>

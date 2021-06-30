@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPartenaire } from '../JS/actions/partenaireAction';
-import PartenaireCard from './PartenaireCard'
+import PartenaireCard from "./PartenaireCard";
 
-const PartenaireList = () => {
+const ClubHome = () => {
     const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartenaire());
   }, []);
-  const partenaires = useSelector((state) => state.partenaires.partenaires);
+  const partenaires = useSelector((state) => state.partenaires);
   return (
     <div style={{ display: "flex", flexWrap: "wrap", margin: "20px" }}>
       {partenaires &&
-        partenaires.map((partenaire) => (
+        partenaires.filter(partenaire=>partenaire.categorie=='club').slice(0,3).map((partenaire) => (
           <PartenaireCard key={partenaire._id} partenaire={partenaire} />
         ))}
     </div>
   );
 };
 
-export default PartenaireList
+export default ClubHome
